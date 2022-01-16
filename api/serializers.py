@@ -17,6 +17,19 @@ class CategorySerializer(serializers.ModelSerializer):
   class Meta:
     model = Category
     fields = '__all__'
-  
-    
 
+class WhitelistSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Whitelist
+    fields = '__all__'
+
+class BlacklistSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Blacklist
+    fields = '__all__'
+
+class profileConfigSerializer(serializers.ModelSerializer):
+  # cat_id = CategorySerializer(many=False)
+  class Meta:
+    model = profileConfig
+    fields = '__all__'
