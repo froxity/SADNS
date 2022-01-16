@@ -10,5 +10,9 @@ urlpatterns = [
  
   path('domains/', views.domains),
   path('category/', views.getCategory),
+  path('whitelist/', views.getWhitelist),
+  path('blacklist/', views.getBlacklist),
+  path('profileConfig/', views.getProfileConfig),
+  path('webfilter/<str:pk>', views.putWebFilter),
   
 ]
