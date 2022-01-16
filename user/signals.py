@@ -20,12 +20,12 @@ def createProfile(sender, instance, created, **kwargs):
 
         categorys = Category.objects.all()
         for cat in categorys:
-
-            profileConfig.objects.create(
-                owner = profile,
-                cat_id = cat,
-                cat_status = False,
-            )
+            if cat.name != 'Others':
+                profileConfig.objects.create(
+                    owner = profile,
+                    cat_id = cat,
+                    cat_status = False,
+                )
 
         subject = "Welcome to SADNS"
         message = 'Thank you for creating a parenting account with SA DNS. We are glad you are here!'
