@@ -1,0 +1,270 @@
+{% include 'main-dashboard.html' %}
+{% load static %}
+{% block content %}
+    <nav class="navbar navbar-expand-md navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="me-1 fas fa-project-diagram fa-sm"></i> SA DNS
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">
+                            <i class="me-2 fas fa-tachometer-alt fa-xs"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'webfilter' %}">
+                            <i class="me-2 fas fa-filter fa-xs"></i>Web Filter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'domains' %}">
+                            <i class="me-2 fas fa-globe fa-xs"></i>Domains
+                        </a>
+                    </li>
+                </ul>
+                <div class="dropdown me-3">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Hello! {{name}}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'account' %}">
+                                <i class="fas fa-user-alt me-2"></i>Account
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Sign-out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="container mt-2">
+            <div class="row mb-3 pt-5">
+                <div class="col-md-8">
+                    <div class="">
+                        <h1>DASHBOARD</h1>
+                        <hr>
+                        <p>Summary of queries and analytical reports for user.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-end">
+                        <a href="">
+                            <button class="btn btn-print text-white">
+                                <i class="fas fa-print me-2"></i>Print
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="pb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">{{totalDNSquery}}</h4>
+                                <p class="card-text">
+                                    Total DNS Queries
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body table-responsive">
+                                    <h4 class="card-title">Activity Report</h4>
+                                    <p class="text-muted">Top five domains queries by {{name}}</p>
+                                    <hr>
+                                    <div id="piechart"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Category Report</h4>
+                                    <hr>
+                                    <div id="chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body table-responsive">
+                            <h4 class="card-title">Popular Domains</h4>
+                            <hr>
+                            <p class="card-text">
+                                insert datatable here
+                            </p>
+                            <table id="example" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Domain</th>
+                                        <th>Frequency</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for domain in domains %}
+                                    <tr>
+                                        <td>{{domain}}</td>
+                                        <td>{{domain.freq}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 p-4">
+
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+
+{% block script %}
+
+{% comment %} Script for Activity Report {% endcomment %}
+<script>
+    var datatop_five = {{datatop_five}};
+    var labels = {{labels|safe}};
+    var options = {
+        series: datatop_five,
+        chart: {
+        width: 500,
+        type: 'pie',
+      },
+      labels: labels,
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 500
+          },
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }]
+      };
+
+      var chart = new ApexCharts(document.querySelector("#piechart"), options);
+      chart.render();
+</script>
+{% comment %} END - Script for Activity Report {% endcomment %}
+
+{% comment %} Script for Category Report {% endcomment %}
+<script>
+    var data_category = {{data_category}};
+    var options = {
+        series: [{
+        name: 'Frequency',
+        data: data_category,
+      }],
+        chart: {
+        height: 350,
+        type: 'bar',
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          dataLabels: {
+            position: 'top', // top, center, bottom
+          },
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        
+        offsetY: -20,
+        style: {
+          fontSize: '12px',
+          colors: ["#304758"]
+        }
+      },
+      
+      xaxis: {
+        categories: ["Pornography", "Gambling", "Security", "Gaming", "Social Media", "Others"],
+        position: 'top',
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        crosshairs: {
+          fill: {
+            type: 'gradient',
+            gradient: {
+              colorFrom: '#D8E3F0',
+              colorTo: '#BED1E6',
+              stops: [0, 100],
+              opacityFrom: 0.4,
+              opacityTo: 0.5,
+            }
+          }
+        },
+        tooltip: {
+          enabled: true,
+        }
+      },
+      yaxis: {
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          show: false,
+        }
+      
+      },
+      title: {
+        text: 'Total frequency per Category',
+        floating: true,
+        offsetY: 330,
+        align: 'center',
+        style: {
+          color: '#444'
+        }
+      }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render();
+</script>
+{% comment %} END - Script for Category Report {% endcomment %}
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            "aLengthMenu": [
+                [5, 10, 25, -1],
+                [5, 10, 25, "All"]
+            ],
+            "iDisplayLength": 5
+        });
+    });
+</script>
+
+{% endblock script %}   
+    

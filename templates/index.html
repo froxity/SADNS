@@ -1,0 +1,87 @@
+{% include 'main.html' %}
+{% load static %}
+{% block content %}
+    <!-- themed-grid-col or themed-container -->
+    <main>
+        {% include 'navbar.html' %}
+        <!-- About Us -->
+        {% comment %} {% include 'toast.html' %} {% endcomment %}
+        <div class="container col-xxl-8 px-4 py-5">
+            {% include 'alert.html' %}
+            <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+                <div class="col-10 col-sm-8 col-lg-6">
+                    <img src="{% static 'images/sadns_aboutus.jpg' %}" class="d-block mx-lg-auto img-fluid" alt="SA DNS LOGO" width="700" height="500" loading="lazy">
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="display-5 fw-bold lh-1 mb-3">SA DNS Filtering System</h1>
+                    <p class="lead">The system is used for traffic monitoring for parental control applications. Giving user-friendly dashboard and customize filtering method based on year preferences</p>
+                    <!-- If user is authenticated -->
+                    {% if request.user.is_authenticated %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <a href="{% url 'dashboard' %}">
+                            <button type="button" class="btn btn-outline-secondary starteddash btn-lg px-4 me-md-2">Go to Dashboard</button>
+                        </a>
+                    </div>
+                    <!-- else -->
+                    {% else %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <a href="{% url 'login' %}">
+                            <button type="button" class="btn btn-outline-secondary starteddash btn-lg px-4 me-md-2">Get Started</button>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Features -->
+        <div class="container px-4 py-5" id="featured-3">
+            <h2 class="pb-2 border-bottom">Features</h2>
+            <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+                <div class="feature col">
+                    <div class="feature-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3>User-friendly analysis</h3>
+                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                </div>
+                <div class="feature col">
+                    <div class="feature-icon">
+                        <i class="fas fa-filter"></i>
+                    </div>
+                    <h3>Web Filter</h3>
+                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                </div>
+                <div class="feature col">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Custom whitelist & blacklist</h3>
+                    <h2></h2>
+                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Contact Us -->
+        <div class="contactus text-secondary px-4 py-5 text-center" id="contactus">
+            <div class="py-5">
+                <h1 class="display-5 fw-bold text-white">Contact Us</h1>
+                <div class="col-lg-6 mx-auto">
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center">
+                        <br>
+                        <li class="list-unstyled me-3">
+                            <i class="far fa-envelope"></i>
+                            <a class="text-white" href="mailto:sadns.tech@gmail.com"><span>sadns.tech@gmail.com</span></a>
+                        </li>
+                        <li class="list-unstyled">
+                            <i class="fas fa-phone-alt"></i>
+                            <span class="text-white">+60 19 XXXXXXX</span>
+                        </li>
+
+                    </div>
+                </div>
+
+                <p class="fs-10 mt-5">Copyright &copy SA DNS 2021</p>
+            </div>
+        </div>
+    </main>
+{% endblock content %}

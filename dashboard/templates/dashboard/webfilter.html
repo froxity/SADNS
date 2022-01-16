@@ -1,0 +1,156 @@
+{% include 'main-dashboard.html' %}
+{% block content %}
+<nav class="navbar navbar-expand-md navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <i class="me-1 fas fa-project-diagram fa-sm"></i> SA DNS
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'dashboard' %}">
+                        <i class="me-2 fas fa-tachometer-alt fa-xs"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'webfilter' %}">
+                        <i class="me-2 fas fa-filter fa-xs"></i>Web Filter
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'domains' %}">
+                        <i class="me-2 fas fa-globe fa-xs"></i>Domains
+                    </a>
+                </li>
+            </ul>
+            <div class="dropdown me-3">
+                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Hello! {{name}}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li>
+                        <a class="dropdown-item" href="{% url 'account' %}">
+                            <i class="fas fa-user-alt me-2"></i>Account
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'logout' %}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Sign-out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<main>
+    <div class="container mt-2">
+        <div class="row mb-3 pt-5">
+            {% include 'alert.html' %}
+            <div class="col-md-8">
+                <div class="">
+                    <h1>WEB FILTER</h1>
+                    <hr>
+                    <h3>Enable or Disable web filter</h3>
+                    <ul>
+                        <li>1. Choose <b>Enable</b> or <b>Disable</b> to change your status <b>Web Filter</b>.</li>
+                        <li>2. All your configuration will be saved and you can see your category status changed on web filter config.</li>
+                    </ul>
+                    <br>
+                    <h3>Choose category to filter</h3>
+                    <ul>
+                        <li>1. You can choose which category you want to filter.</li>
+                        <li>2. Choose <b>Enable</b> or <b>Disable</b> to change your status category filter.</li>
+                        <li>3. All your configuration will be saved and you can see your category status changed on web filter config.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Status Profile Config</h4>
+                        <hr>
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <td>Filter</td>
+                                    <td>Status</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cat in categorys  %}
+                                    {% if cat.cat_status %}
+                                        <tr>
+                                            <td>{{cat.cat_id}}</td>
+                                            <td>
+                                                <span class="status on"></span>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td>{{cat.cat_id}}</td>
+                                            <td>
+                                                <span class="status off"></span>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body table-responsive">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4 class="card-title">
+                                Profile Config Settings
+                            </h4>
+                            <i class="align-content-end fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose category to filter."></i>
+                        </div>
+                        <hr>
+                        <table id="blacklist" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Action</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cat in categorys %}
+                                <tr>
+                                    <td>{{cat.cat_id}}</td>
+                                    <td>
+                                        <a href="{% url 'setfiltertrue' cat.id %}">
+                                            <button class="btn btn-success text-white">
+                                                Enable
+                                            </button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'setfilterfalse' cat.id %}">
+                                            <button class="btn btn-delete text-white">
+                                            Disable
+                                        </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

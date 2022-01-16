@@ -1,0 +1,95 @@
+{% include 'main-dashboard.html' %}
+{% block content %}
+<nav class="navbar navbar-expand-md navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <i class="me-1 fas fa-project-diagram fa-sm"></i> SA DNS
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'dashboard' %}">
+                        <i class="me-2 fas fa-tachometer-alt fa-xs"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'webfilter' %}">
+                        <i class="me-2 fas fa-filter fa-xs"></i>Web Filter
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'domains' %}">
+                        <i class="me-2 fas fa-globe fa-xs"></i>Domains
+                    </a>
+                </li>
+            </ul>
+            <div class="dropdown me-3">
+                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Hello! {{name}}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li>
+                        <a class="dropdown-item" href="{% url 'account' %}">
+                            <i class="fas fa-user-alt me-2"></i>Account
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'logout' %}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Sign-out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </nav>
+<main>
+    <div class="container mt-2">
+        <div class="row mb-3 pt-5">
+            <div class="col-md-8">
+                <div class="">
+                    <h1>Domains</h1>
+                    <hr>
+                    <p>This section where you can add your custom website or domain into whitelist and blacklist settings.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4 class="card-title">Blacklist</h4>
+                            <a href="{% url 'domains' %}">
+                                <button class="btn btn-print text-white">
+                                    <i class="fas fa-arrow-left me-2"></i>Back
+                                </button>
+                            </a>
+                        </div>
+                        <hr>
+                        <p class="card-text">
+                            You can add custom domains or any website to be whitelist
+                        </p>
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {% for field in form_blacklist %}
+                            <div class="mb-3">
+                                <label for="formGroupExampleInput" class="form-label">{{field.label}}</label>
+                                {{field}}
+                            </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary mb-3">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}
