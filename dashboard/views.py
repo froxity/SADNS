@@ -31,20 +31,20 @@ def dashboard(request):
     # End -- Activity Report process
 
     # Category Report process
-    gambling, socialmed, gaming, pornography, security, others = 0, 0, 0, 0, 0, 0
+    gambling, socialmed, gaming, adult, others = 0, 0, 0, 0, 0
     for x in domains:
-        if (x.cat_id.name == 'Pornography'):
-            pornography = pornography + x.freq
+        if (x.cat_id.name == 'Adult'):
+            adult = adult + x.freq
         elif (x.cat_id.name == 'Gambling'):
             gambling = gambling + x.freq
-        elif (x.cat_id.name == 'Security'):
-            security = security + x.freq
+        elif (x.cat_id.name == 'Social Media'):
+            socialmed = socialmed + x.freq
         elif (x.cat_id.name == 'Gaming'):
             gaming = gaming + x.freq
         elif (x.cat_id.name == 'Others'):
             others = others + x.freq
             
-    data_category = [pornography, gambling, security, gaming, socialmed, others]
+    data_category = [adult, gambling, socialmed, gaming, others]
     # End -- Category Report process
 
     context = {
@@ -93,7 +93,15 @@ def domains(request):
     name = request.user.first_name
     form_whitelist = WhitelistForm(instance=profile)
     form_blacklist = BlacklistForm(instance=profile)
-
+    tempdomain = profile.domain_set.all()
+    testurl = 'youtube.com'
+    for x in tempdomain:
+        if testurl in x.domain:
+            item = Domain.objects.get(id=x.id)
+            print('The frequency for this domain is: ' + str(item.freq))
+        else:
+            print(False)
+    print(tempdomain)
     # whitelist POST request
     if request.method=='POST' and 'button1' in request.POST:
         form_whitelist = WhitelistForm(request.POST)
