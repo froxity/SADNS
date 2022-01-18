@@ -44,6 +44,8 @@ def dashboard(request):
         elif (x.cat_id.name == 'Others'):
             others = others + x.freq
             
+    testerror = Blacklist.objects.filter(id=pk)
+    print(testerror)
     data_category = [adult, gambling, socialmed, gaming, others]
     # End -- Category Report process
 

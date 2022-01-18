@@ -132,6 +132,10 @@ td .status:last-child {
     background: var(--color-dark);
 }
 
+.title {
+    font-size: 100px;
+}
+
 
 /* .alertmsg {
     margin-top: 4rem;

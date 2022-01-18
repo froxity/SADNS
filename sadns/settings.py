@@ -25,10 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-3s_sgx3zxv7jkd%)=_s@160qj3q9k$(i6heq-vpvzko6-h0a)w'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# Debug and development process use This!
 DEBUG = True
-
 ALLOWED_HOSTS = []
+
+# SECURITY WARNING: don't run with debug turned on in production!
+# Uncomment this for if want to use POST website into liver server
+# DEBUG = False
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
@@ -122,7 +126,7 @@ SIMPLE_JWT = {
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -137,7 +141,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
+            os.path.join(BASE_DIR, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
