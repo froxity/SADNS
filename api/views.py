@@ -64,23 +64,25 @@ def getCategory(request):
   return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getWhitelist(request):
   # Request user profile since we need to get all whitelist from that User
-  profile = request.user.profile
+  # profile = request.user.profile
   # Get all whitelist domain from the USER
-  domain_whitelist = profile.whitelist_set.all()
+  # domain_whitelist = profile.whitelist_set.all()
+  domain_whitelist = Whitelist.objects.all()
   # Serialize JSON data
   serializer = WhitelistSerializer(domain_whitelist, many=True)
   return Response(serializer.data ,status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getBlacklist(request):
   # Request user profile since we need to get all blacklist from that User
-  profile = request.user.profile
+  # profile = request.user.profile
   # Get all blacklist domain from the USER
-  domain_blacklist = profile.blacklist_set.all()
+  # domain_blacklist = profile.blacklist_set.all()
+  domain_blacklist = Blacklist.objects.all()
   # Serialize JSON data
   serializer = BlacklistSerializer(domain_blacklist, many=True)
   return Response(serializer.data, status=status.HTTP_201_CREATED)
