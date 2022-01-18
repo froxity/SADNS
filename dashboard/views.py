@@ -44,8 +44,6 @@ def dashboard(request):
         elif (x.cat_id.name == 'Others'):
             others = others + x.freq
             
-    testerror = Blacklist.objects.filter(id=pk)
-    print(testerror)
     data_category = [adult, gambling, socialmed, gaming, others]
     # End -- Category Report process
 
@@ -102,8 +100,8 @@ def domains(request):
             item = Domain.objects.get(id=x.id)
             print('The frequency for this domain is: ' + str(item.freq))
         else:
-            print(False)
-    print(tempdomain)
+            continue
+    
     # whitelist POST request
     if request.method=='POST' and 'button1' in request.POST:
         form_whitelist = WhitelistForm(request.POST)
