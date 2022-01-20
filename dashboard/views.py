@@ -1,11 +1,117 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import FileResponse
 from .models import *
 from .forms import *
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from textwrap import wrap
 import json
+import io
+import datetime
 
 # Create your views here.
+
+# Generate a PDF file for dashboard
+@login_required(login_url="login")
+def generateReport(request):
+    profile = request.user.profile
+    name = request.user.first_name
+    """Getting Data process"""
+    # Getting all domains object from user (that login to system)
+    domains = Domain.objects.filter(owner=profile)
+    # Calculate Total DNS queries
+    totalDNSquery = 0
+    for x in domains:
+        totalDNSquery = totalDNSquery + x.freq
+    # end -- Calculate Total DNS queries
+
+    # Activity Report process 
+    top_five = Domain.objects.order_by('-freq').filter(owner=profile).values_list('freq', flat=True).distinct()
+    top_activity = Domain.objects.order_by('-freq').filter(freq__in=top_five[:5], owner=profile)
+    # End -- Activity Report process
+    # Category Report process
+    gambling, socialmed, security, adult, others = 0, 0, 0, 0, 0
+    for x in domains:
+        if (x.cat_id.name == 'Adult'):
+            adult = adult + x.freq
+        elif (x.cat_id.name == 'Gambling'):
+            gambling = gambling + x.freq
+        elif (x.cat_id.name == 'Social Media'):
+            socialmed = socialmed + x.freq
+        elif (x.cat_id.name == 'Security'):
+            security = security + x.freq
+        elif (x.cat_id.name == 'Others'):
+            others = others + x.freq
+    """End Data process"""
+    
+    """Drawing PDF process"""
+    # Create bytestream buffer
+    buffer = io.BytesIO()
+    # Create a canvas
+    c = canvas.Canvas(buffer, pagesize=letter, bottomup=0)
+    
+    # Create a text object
+    textObj = c.beginText()
+    textObj.setTextOrigin(inch, inch)
+    textObj.setFont('Helvetica', 14)
+    
+    # Create textline "TITLE"
+    textObj.textLine("SA DNS Dashboard Report")
+    
+    # Get current datetime
+    getTime = datetime.datetime.now()
+    date = getTime.strftime("%x")
+    time = getTime.strftime("%c")
+    textObj.textLine(time + " | " + date)
+    
+    textObj.textLine()
+    textObj.textLine()
+    textObj.textLine("Total DNS queries: " + str(totalDNSquery))
+    textObj.textLine()
+    textObj.textLine("--------------------")
+    textObj.textLine("Activity Report  ")
+    textObj.textLine("--------------------")
+    textObj.textLine("Top five domains queries by " + name)
+    textObj.textLine()
+    for x in top_activity:
+        textObj.textLine(x.domain + " | " + str(x.freq))
+    textObj.textLine()
+    textObj.textLine("----------------------")
+    textObj.textLine("Category Report  ")
+    textObj.textLine("----------------------")
+    textObj.textLine()
+    textObj.textLine("Adult: " + str(adult))
+    textObj.textLine("Gambling: " + str(gambling))
+    textObj.textLine("Social Media: " + str(socialmed))
+    textObj.textLine("Security: " + str(security))
+    textObj.textLine("Others: " + str(others))
+    textObj.textLine()
+    textObj.textLine()
+    textObj.setFont('Helvetica', 8)
+    textObj.textLine("Adult: Domains that contains Not Safe for Work (NSFW) or any pornography content")
+    textObj.textLine("Gambling: Domains that contains all gambling website.")
+    textObj.textLine("Social Media: Domains that contains any realted social media platform.")
+    textObj.textLine("Security: Domains that contains malicious and scam website")
+    textObj.textLine("Others: Domains that is categorised not harmful but not listed in default categories")
+    
+    # Finish up
+    c.line(50, 50, 560, 50)
+    c.line(50, 100, 560, 100)
+    c.line(50, 510, 560, 510)
+    c.drawText(textObj)
+    c.showPage()
+    c.save()
+    buffer.seek(0)
+    """Drawing PDF process"""
+    filename = 'dashboard_' + time + "_.pdf"
+    # Return
+    return FileResponse(buffer, as_attachment=True, filename=filename)
+
+# Generate dashboard page
 @login_required(login_url="login")
 def dashboard(request):
     profile = request.user.profile
@@ -31,7 +137,7 @@ def dashboard(request):
     # End -- Activity Report process
 
     # Category Report process
-    gambling, socialmed, gaming, adult, others = 0, 0, 0, 0, 0
+    gambling, socialmed, security, adult, others = 0, 0, 0, 0, 0
     for x in domains:
         if (x.cat_id.name == 'Adult'):
             adult = adult + x.freq
@@ -39,12 +145,12 @@ def dashboard(request):
             gambling = gambling + x.freq
         elif (x.cat_id.name == 'Social Media'):
             socialmed = socialmed + x.freq
-        elif (x.cat_id.name == 'Gaming'):
-            gaming = gaming + x.freq
+        elif (x.cat_id.name == 'Security'):
+            security = security + x.freq
         elif (x.cat_id.name == 'Others'):
             others = others + x.freq
             
-    data_category = [adult, gambling, socialmed, gaming, others]
+    data_category = [adult, gambling, socialmed, security, others]
     # End -- Category Report process
 
     context = {
@@ -93,14 +199,6 @@ def domains(request):
     name = request.user.first_name
     form_whitelist = WhitelistForm(instance=profile)
     form_blacklist = BlacklistForm(instance=profile)
-    tempdomain = profile.domain_set.all()
-    testurl = 'youtube.com'
-    for x in tempdomain:
-        if testurl in x.domain:
-            item = Domain.objects.get(id=x.id)
-            print('The frequency for this domain is: ' + str(item.freq))
-        else:
-            continue
     
     # whitelist POST request
     if request.method=='POST' and 'button1' in request.POST:
