@@ -13,103 +13,78 @@ import json
 import io
 import datetime
 
+# Libary for html to pdf
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.views import View
+from xhtml2pdf import pisa
 # Create your views here.
 
-# Generate a PDF file for dashboard
-@login_required(login_url="login")
-def generateReport(request):
-    profile = request.user.profile
-    name = request.user.first_name
-    """Getting Data process"""
-    # Getting all domains object from user (that login to system)
-    domains = Domain.objects.filter(owner=profile)
-    # Calculate Total DNS queries
-    totalDNSquery = 0
-    for x in domains:
-        totalDNSquery = totalDNSquery + x.freq
-    # end -- Calculate Total DNS queries
+#  Render HTML to PDF using xhtml2pdf
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
 
-    # Activity Report process 
-    top_five = Domain.objects.order_by('-freq').filter(owner=profile).values_list('freq', flat=True).distinct()
-    top_activity = Domain.objects.order_by('-freq').filter(freq__in=top_five[:5], owner=profile)
-    # End -- Activity Report process
-    # Category Report process
-    gambling, socialmed, security, adult, others = 0, 0, 0, 0, 0
-    for x in domains:
-        if (x.cat_id.name == 'Adult'):
-            adult = adult + x.freq
-        elif (x.cat_id.name == 'Gambling'):
-            gambling = gambling + x.freq
-        elif (x.cat_id.name == 'Social Media'):
-            socialmed = socialmed + x.freq
-        elif (x.cat_id.name == 'Security'):
-            security = security + x.freq
-        elif (x.cat_id.name == 'Others'):
-            others = others + x.freq
-    """End Data process"""
-    
-    """Drawing PDF process"""
-    # Create bytestream buffer
-    buffer = io.BytesIO()
-    # Create a canvas
-    c = canvas.Canvas(buffer, pagesize=letter, bottomup=0)
-    
-    # Create a text object
-    textObj = c.beginText()
-    textObj.setTextOrigin(inch, inch)
-    textObj.setFont('Helvetica', 14)
-    
-    # Create textline "TITLE"
-    textObj.textLine("SA DNS Dashboard Report")
-    
-    # Get current datetime
-    getTime = datetime.datetime.now()
-    date = getTime.strftime("%x")
-    time = getTime.strftime("%c")
-    textObj.textLine(time + " | " + date)
-    
-    textObj.textLine()
-    textObj.textLine()
-    textObj.textLine("Total DNS queries: " + str(totalDNSquery))
-    textObj.textLine()
-    textObj.textLine("--------------------")
-    textObj.textLine("Activity Report  ")
-    textObj.textLine("--------------------")
-    textObj.textLine("Top five domains queries by " + name)
-    textObj.textLine()
-    for x in top_activity:
-        textObj.textLine(x.domain + " | " + str(x.freq))
-    textObj.textLine()
-    textObj.textLine("----------------------")
-    textObj.textLine("Category Report  ")
-    textObj.textLine("----------------------")
-    textObj.textLine()
-    textObj.textLine("Adult: " + str(adult))
-    textObj.textLine("Gambling: " + str(gambling))
-    textObj.textLine("Social Media: " + str(socialmed))
-    textObj.textLine("Security: " + str(security))
-    textObj.textLine("Others: " + str(others))
-    textObj.textLine()
-    textObj.textLine()
-    textObj.setFont('Helvetica', 8)
-    textObj.textLine("Adult: Domains that contains Not Safe for Work (NSFW) or any pornography content")
-    textObj.textLine("Gambling: Domains that contains all gambling website.")
-    textObj.textLine("Social Media: Domains that contains any realted social media platform.")
-    textObj.textLine("Security: Domains that contains malicious and scam website")
-    textObj.textLine("Others: Domains that is categorised not harmful but not listed in default categories")
-    
-    # Finish up
-    c.line(50, 50, 560, 50)
-    c.line(50, 100, 560, 100)
-    c.line(50, 510, 560, 510)
-    c.drawText(textObj)
-    c.showPage()
-    c.save()
-    buffer.seek(0)
-    """Drawing PDF process"""
-    filename = 'dashboard_' + time + "_.pdf"
-    # Return
-    return FileResponse(buffer, as_attachment=True, filename=filename)
+# Generate a PDF file for dashboard
+class ViewPDF(View):
+    def get(self, request, *args, **kwargs):
+        profile = request.user.profile
+        name = request.user.first_name
+        
+        # Getting all domains object from user (that login to system)
+        domains = Domain.objects.filter(owner=profile)
+        
+        # Calculate Total DNS queries
+        totalDNSquery = 0
+        for x in domains:
+            totalDNSquery = totalDNSquery + x.freq
+        # end -- Calculate Total DNS queries
+
+        # Activity Report process 
+        top_five = Domain.objects.order_by('-freq').filter(owner=profile).values_list('freq', flat=True).distinct()
+        top_activity = Domain.objects.order_by('-freq').filter(freq__in=top_five[:5], owner=profile)
+        # End -- Activity Report process
+
+        # Category Report process
+        gambling, socialmed, security, adult, others = 0, 0, 0, 0, 0
+        for x in domains:
+            if (x.cat_id.name == 'Adult'):
+                adult = adult + x.freq
+            elif (x.cat_id.name == 'Gambling'):
+                gambling = gambling + x.freq
+            elif (x.cat_id.name == 'Social Media'):
+                socialmed = socialmed + x.freq
+            elif (x.cat_id.name == 'Security'):
+                security = security + x.freq
+            elif (x.cat_id.name == 'Others'):
+                others = others + x.freq
+                
+        getTime = datetime.datetime.now()
+        date = getTime.strftime("%x")
+        time = getTime.strftime("%c")
+        # End -- Category Report process
+
+        context = {
+            'name' : name,
+            'totalDNSquery': totalDNSquery,
+            'domains': domains,
+            'top_activity': top_activity,
+            'Adult': adult, 
+            'Gambling': gambling, 
+            'Social': socialmed, 
+            'Security': security, 
+            'Others': others,
+            'date': date,
+            'time': time,
+        }
+        pdf = render_to_pdf('dashboard/reportpdf.html', context)
+        return HttpResponse(pdf, content_type='application/pdf')
 
 # Generate dashboard page
 @login_required(login_url="login")

@@ -1,0 +1,155 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap');
+  .themed-grid-col {
+    padding: .75rem;
+    margin-bottom: 1.5rem;
+    background-color: #ffffff;
+    border: 1px solid black;
+  }
+  .customheader{
+    background-color: #0E345E;
+    color: white;
+    padding: .75rem;
+  }
+  .customsubheader{
+    background-color: #4998F2;
+    color: white;
+    padding: .75rem;
+  }
+</style>
+    
+<main>
+  <h1>SA DNS Report | {{date}}  | {{time}}</h1>
+    <div class="container mt-2">
+        <div class="row mb-3 pt-5">
+            <div class="col-md-8">
+                <div class="">
+                    <h3 class="customheader">DASHBOARD</h3>
+                    <p>Summary of queries and analytical reports for user.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="pb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title customsubheader">Total DNS Queries:</h3>
+                            <p class="card-text">
+                                {{totalDNSquery}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body table-responsive ">
+                                <h3 class="card-title customsubheader">Activity Report</h3>
+                                <p class="text-muted">Top five domains queries by {{name}}</p>
+                                <table id="example" class="table table-striped themed-grid-col" style="width:100%">
+                                  <thead>
+                                      <tr>
+                                          <th style="text-align: left;">Domain</th>
+                                          <th style="text-align: left;">Frequency</th>
+                                          <th style="text-align: left;">Category</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      {% for domain in top_activity %}
+                                      <tr>
+                                          <td style="text-align: left;">{{domain}}</td>
+                                          <td style="text-align: left;">{{domain.freq}}</td>
+                                          <td style="text-align: left;">{{domain.cat_id.name}}</td>
+                                      </tr>
+                                      {% endfor %}
+                                  </tbody>
+                              </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title customsubheader">Category Report</h3>
+                                <p style="font-size: 8px; color: grey;">Adult: Domains that contains Not Safe for Work (NSFW) or any pornography content</p>
+                                <p style="font-size: 8px; color: grey;">Gambling: Domains that contains all gambling website.</p>
+                                <p style="font-size: 8px; color: grey;">Social Media: Domains that contains any realted social media platform.</p>
+                                <p style="font-size: 8px; color: grey;">Security: Domains that contains malicious and scam website</p>
+                                <p style="font-size: 8px; color: grey;">Others: Domains that is categorised not harmful but not listed in default categories</p>
+                                <table id="example" class="table table-striped themed-grid-col" style="width:100%">
+                                  <thead>
+                                      <tr>
+                                          <th style="text-align: left;">Category</th>
+                                          <th style="text-align: left;">Frequency</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                        <td style="text-align: left;">Adult</td>
+                                        <td style="text-align: left;">{{Adult}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td style="text-align: left;">Gambling</td>
+                                        <td style="text-align: left;">{{Gambling}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td style="text-align: left;">Social Media</td>
+                                        <td style="text-align: left;">{{Social}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td style="text-align: left;">Security</td>
+                                        <td style="text-align: left;">{{Security}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td style="text-align: left;">Others</td>
+                                        <td style="text-align: left;">{{Others}}</td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body table-responsive">
+                      <h4 class="card-title customsubheader">Popular Domains</h4>
+                        <table id="example" class="table table-striped themed-grid-col" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Domain</th>
+                                    <th style="text-align: left;">Frequency</th>
+                                    <th style="text-align: left;">Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for domain in domains %}
+                                <tr>
+                                    <td style="text-align: left;">{{domain}}</td>
+                                    <td style="text-align: left;">{{domain.freq}}</td>
+                                    <td style="text-align: left;">{{domain.cat_id.name}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 p-4">
+        </div>
+    </div>
+</main>
+
+    

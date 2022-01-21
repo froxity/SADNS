@@ -11,5 +11,5 @@ urlpatterns = [
     path('edit_bdomain/<str:pk>/', views.edit_bdomain, name='edit_bdomain'),
     path('delete_wdomain/<str:pk>/', views.delete_wdomain, name='delete_wdomain'),
     path('delete_bdomain/<str:pk>/', views.delete_bdomain, name='delete_bdomain'),
-    path('dashboard_pdf/', views.generateReport, name='generate_report'),
+    path('dashboard_report/', views.ViewPDF.as_view(), name='dashboard_report'),
 ]
