@@ -32,16 +32,19 @@ def domains(request):
     # Checking is it POST data is inside tempdomain_list
     for x in tempdomain_list:
       if tempdomain_data in x.domain:
-        domainstatus = True
-        break
-        # try:
-        #   item = Domain.objects.get(id=x.id)
-        #   item.freq = item.freq + int(data['freq'])
-        #   item.save()
-        #   domainstatus = True
-        #   break
-        # except TypeError:
-        #   print(tempdomain_data) 
+        try:
+          item = Domain.objects.get(id=x.id)
+          if item.freq < int(data['freq']): # Check if any changes
+            # item.freq = item.freq + int(data['freq']) # Should not added because it will create redudancy
+            item.freq = int(data['freq'])
+            item.save()
+            domainstatus = True
+            break
+          else:
+            domainstatus = True
+            break
+        except TypeError:
+          print(tempdomain_data) 
     # If is not inside tempdomain_list then Create new domain into Domain Model
     if domainstatus == False:
       domain = Domain.objects.create(
