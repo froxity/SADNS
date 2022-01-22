@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 import os
+import django_heroku
 from datetime import timedelta
 from pathlib import Path
 from django.contrib.messages import constants as messages
@@ -27,7 +28,7 @@ SECRET_KEY = 'django-insecure-3s_sgx3zxv7jkd%)=_s@160qj3q9k$(i6heq-vpvzko6-h0a)w
 
 # Debug and development process use This!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [sadns.herokuapp.com]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Uncomment this for if want to use POST website into liver server
@@ -161,23 +162,23 @@ WSGI_APPLICATION = 'sadns.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'd8q4f959la7hph',
-#         'USER': 'pygdamzoafmmmc',
-#         'PASSWORD': 'ff7e7f81326ce303a38905ebaf5a1bcec3a7ef3dabec6259a88793167cbddc94',
-#         'HOST': 'ec2-174-129-37-144.compute-1.amazonaws.com',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd2f7kqgmorgr4t',
+        'USER': 'iepmpmmhqxaynp',
+        'PASSWORD': 'd287c1b433a3b28e6469ec723c88859db3c15d4f787d010f00e37c4be02a15a1',
+        'HOST': 'ec2-23-21-229-200.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation
@@ -237,7 +238,7 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+django_heroku.settings(locals())
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
