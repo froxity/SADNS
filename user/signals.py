@@ -35,7 +35,7 @@ def createProfile(sender, instance, created, **kwargs):
             message, 
             settings.EMAIL_HOST_USER, 
             [profile.email],
-            fail_silently=False,
+            fail_silently=True,
         )
 
 def updateUser(sender, instance, created, **kwargs):
