@@ -1,0 +1,1 @@
+web: gunicorn sadns.wsgi --log-file -
