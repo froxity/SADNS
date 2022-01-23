@@ -13,7 +13,7 @@ Error Handling for HTTP response
 handler400 = 'sadns.views.handler400'
 handler403 = 'sadns.views.handler403'
 handler404 = 'sadns.views.handler404'
-handler500 = 'sadns.views.handler500'
+# handler500 = 'sadns.views.handler500'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
