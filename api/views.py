@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import *
 from dashboard.models import *
+from dashboard.forms import *
 
 @api_view(['GET','POST'])
 @permission_classes([IsAuthenticated])
@@ -73,15 +74,32 @@ def getCategory(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getWhitelist(request):
-  # Request user profile since we need to get all whitelist from that User
-  profile = request.user.profile
-  # Get all whitelist domain from the USER
-  domain_whitelist = profile.whitelist_set.all()
-  # domain_whitelist = Whitelist.objects.all()
-  # Serialize JSON data
-  serializer = WhitelistSerializer(domain_whitelist, many=True)
-  return Response(serializer.data ,status=status.HTTP_201_CREATED)
+def whitelist(request):
+  """
+  List all whitelist, or create a new whitelist
+  """
+  if request.method == 'GET':
+    # Request user profile since we need to get all whitelist from that User
+    profile = request.user.profile
+    # Get all whitelist domain from the USER
+    domain_whitelist = profile.whitelist_set.all()
+    # domain_whitelist = Whitelist.objects.all()
+    # Serialize JSON data
+    serializer = WhitelistSerializer(domain_whitelist, many=True)
+    return Response(serializer.data)
+  
+  elif request.method == 'POST':
+    profile = request.user.profile
+    data = request.data
+    form_whitelist = WhitelistForm(instance=profile)
+    form_whitelist = WhitelistForm(request.POST)
+    if form_whitelist.is_valid():
+      whitelist = form_whitelist.save(commit=False)
+      whitelist.owner = profile
+      whitelist.save()
+      return Response(status=status.HTTP_201_CREATED)
+  else:
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
