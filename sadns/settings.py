@@ -14,7 +14,7 @@ import os
 import django_heroku
 from datetime import timedelta
 from pathlib import Path
-from dotaenv import load_dotenv
+from dotenv import load_dotenv
 from django.contrib.messages import constants as messages
 
 # Using dotenv to load environment variables
