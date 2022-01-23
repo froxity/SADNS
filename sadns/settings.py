@@ -34,6 +34,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # Debug and development process use This!
 DEBUG = False
 ALLOWED_HOSTS = ['sadns.herokuapp.com', 'localhost']
+# ALLOWED_HOSTS = []
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Uncomment this for if want to use POST website into liver server
@@ -225,8 +226,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER"),
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD"),
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
