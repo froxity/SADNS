@@ -1,4 +1,8 @@
 {% include 'main-dashboard.html' %}
+{% load static %}
+{% block style %}
+<link href="{% static 'styles/dashboard.css' %}" rel="stylesheet">
+{% endblock style %}
 {% block content %}
 <nav class="navbar navbar-expand-md navbar-dark fixed-top">
     <div class="container-fluid">
@@ -48,7 +52,7 @@
 </nav>
 
 <main>
-    <div class="container mt-5">
+    <div class="container primaryContainer mt-5">
         <div class="row mb-3 pt-5">
             <div class="col">
                 <div class="">
@@ -81,7 +85,7 @@
             </div>
         </div>
     </div>
-    <div class="container mt-5">
+    <div class="container primaryContainer mt-5">
         <div class="row mb-3 pt-5">
             <div class="col">
                 <div class="">
@@ -91,7 +95,7 @@
             </div>
         </div>
     </div>
-    <div class="container mb-5">
+    <div class="container mb-5 pb-5">
         <div class="row mb-3">
             <div class="col-6">
                 <div class="card card-support">
@@ -100,7 +104,7 @@
                             Email
                         </h5>
                         <i class="far fa-envelope"></i>
-                        <a class="text-white" href="mailto:sadns.tech@gmail.com"><span>sadns.tech@gmail.com</span></a>
+                        <a style="text-decoration:none" class="text-white" href="mailto:sadns.tech@gmail.com"><span>sadns.tech@gmail.com</span></a>
                         <hr>
                         <h5 class="card-title">
                             Phone number

@@ -1,4 +1,8 @@
 {% include 'main-dashboard.html' %}
+{% load static %}
+{% block style %}
+<link href="{% static 'styles/dashboard.css' %}" rel="stylesheet">
+{% endblock style %}
 {% block content %}
 <nav class="navbar navbar-expand-md navbar-dark">
 <div class="container-fluid">
@@ -53,7 +57,7 @@
 
 <main>
 
-<div class="container mt-2">
+<div class="container primaryContainer mt-2">
     {% include 'alert.html' %}
     <div class="row mb-3 pt-5">
         <div class="col-md-8">
@@ -80,7 +84,7 @@
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="formGroupExampleInput" class="form-label">Domain</label>
-                            <input type="text" class="form-control" name="wl_domain" id="formGroupExampleInput" placeholder="www.domain.com or domain.com">
+                            <input type="text" class="form-control" name="wl_domain" id="formGroupExampleInput" placeholder="www.youtube.com or youtube.com">
                         </div>
                         <div class="mb-3">
                             <label for="formGroupExampleInput2" class="form-label">Comment</label>
@@ -118,11 +122,30 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'delete_wdomain' x.id %}">
-                                        <button class="btn btn-delete text-white">
+                                    <button type="button" class="btn btn-delete text-white" data-bs-toggle="modal" data-bs-target="#whitelistModal">
                                         <i class="fas fa-trash me-2"></i>Delete
                                     </button>
-                                    </a>
+                                    <div class="modal fade" id="whitelistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete "{{ x.wl_domain }}"?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <a href="{% url 'delete_wdomain' x.id %}">
+                                                        <button class="btn btn-delete text-white">
+                                                            <i class="fas fa-trash me-2"></i>Delete
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -133,6 +156,7 @@
         </div>
     </div>
 </div>
+
 <div class="container">
     <div class="row mb-3">
         <div class="col-md-6">
@@ -147,7 +171,7 @@
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="formGroupExampleInput" class="form-label">Domain</label>
-                            <input type="text" class="form-control" name="bl_domain" id="formGroupExampleInput" placeholder="www.domain.com or domain.com">
+                            <input type="text" class="form-control" name="bl_domain" id="formGroupExampleInput" placeholder="www.pornhub.com or pornhub.com">
                         </div>
                         <div class="mb-3">
                             <label for="formGroupExampleInput2" class="form-label">Comment</label>
@@ -185,11 +209,30 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'delete_bdomain' y.id %}">
-                                        <button class="btn btn-delete text-white">
+                                    <button type="button" class="btn btn-delete text-white" data-bs-toggle="modal" data-bs-target="#blacklistModal">
                                         <i class="fas fa-trash me-2"></i>Delete
                                     </button>
-                                    </a>
+                                    <div class="modal fade" id="blacklistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete "{{ y.bl_domain }}"?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <a href="{% url 'delete_bdomain' y.id %}">
+                                                        <button class="btn btn-delete text-white">
+                                                            <i class="fas fa-trash me-2"></i>Delete
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -203,6 +246,11 @@
 </main>
 {% endblock content %}
 {% block script %}
+<script>
+    $(document).on('click', '.confirm-delete', function(){
+        return confirm('Are you sure you want to delete this?');
+    })
+</script>
 <script>
 $(document).ready(function() {
     $('#whitelist').DataTable({

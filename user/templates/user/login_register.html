@@ -1,7 +1,9 @@
 {% include 'main.html' %} {% include 'navbar.html' %} {% load static %} {% block styles %}
-<link href="{% static 'styles/grid.css' %}" rel="stylesheet"> {% endblock styles %} {% block content %} {% if page == 'register' %}
 
+<link href="{% static 'styles/grid.css' %}" rel="stylesheet"> 
 
+{% endblock styles %} {% block content %} {% if page == 'register' %}
+<main>
 <div class="container mt-5 pt-5 pb-5">
     <div class="row mb-3">
         <div class="col-3"></div>
@@ -19,22 +21,29 @@
                     </div>
                     <div class="form-register">
                         <form action="{% url 'register' %}" method="POST" class="form auth_form">
-                            {% csrf_token %} {% for field in form %}
-                            <div class>
+                            {% csrf_token %} 
+                            {% for field in form %}
+                            <div class="form-floating mb-3 ms-5 me-5">
+                                {{field}}
+                                {% for error in field.errors %}
+                                <p style="color: red;">{{error}}</p>
+                                {% endfor %} 
+                                <label for="floatingInput">{{field.label}}</label>
                             </div>
-                            <label for="formGroupExampleInput" class="form-label">{{field.label}}</label>
+                             {% comment %} <label for="formGroupExampleInput" class="form-label">{{field.label}}</label>
                             <div class="field mb-2">
-                                {{field}} {% for error in field.errors %}
+                                {{field}} 
+                                {% for error in field.errors %}
                                 <p style="color: red;">{{error}}</p>
                                 {% endfor %}
-                            </div>
+                            </div>  {% endcomment %}
                             {% endfor %}
                             <button type="submit" class="btn btn-print text-white mt-3 mb-2">Sign Up</button>
                         </form>
                     </div>
                     <div class="auth_alternative d-flex justify-content-center">
                         <p>Already have an Account?</p>
-                        <a href="{% url 'login' %}" class="ms-2">Log In</a>
+                        <a style="text-decoration:none" href="{% url 'login' %}" class="ms-2">Log In</a>
                     </div>
                 </div>
             </div>
@@ -42,10 +51,11 @@
         <div class="col-3"></div>
     </div>
 </div>
+</main>
 
 <!-- IF USER WANT TO LOGIN -->
 {% else %}
-
+<main>
 <div class="container mt-5 pt-5 pb-5">
     <div class="row mb-3">
         <div class="col-3"></div>
@@ -74,11 +84,11 @@
                             </div>
                             <button type="submit" class="btn btn-print text-white mt-3 mb-2">Login</button>
                         </form>
-                        <a href="{% url 'reset_password' %}">Forget Password?</a> 
+                        <a style="text-decoration:none" href="{% url 'reset_password' %}">Forget Password?</a> 
                     </div>
                     <div class="auth_alternative d-flex justify-content-center">
                         <p>Don’t have an Account?</p>
-                        <a href="{% url 'register' %}" class="ms-2">Sign Up</a>
+                        <a style="text-decoration:none" href="{% url 'register' %}" class="ms-2">Sign Up</a>
                     </div>
                 </div>
             </div>
@@ -86,4 +96,13 @@
         <div class="col-3"></div>
     </div>
 </div>
-{% endif %} {% endblock content %}
+</main>
+{% endif %} 
+
+{% comment %} <div class="contactus text-secondary p-4 text-center" id="contactus">
+    <div class="">
+        <p class="fs-10 mt-5">Copyright &copy SA DNS 2021</p>
+    </div>
+</div>     {% endcomment %}
+
+{% endblock content %}

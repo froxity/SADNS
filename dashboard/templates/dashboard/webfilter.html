@@ -1,4 +1,8 @@
 {% include 'main-dashboard.html' %}
+{% load static %}
+{% block style %}
+<link href="{% static 'styles/dashboard.css' %}" rel="stylesheet">
+{% endblock style %}
 {% block content %}
 <nav class="navbar navbar-expand-md navbar-dark">
     <div class="container-fluid">
@@ -47,23 +51,23 @@
     </div>
 </nav>
 <main>
-    <div class="container mt-2">
+    <div class="container primaryContainer mt-2">
         <div class="row mb-3 pt-5">
             {% include 'alert.html' %}
             <div class="col-md-8">
                 <div class="">
                     <h1>WEB FILTER</h1>
                     <hr>
-                    <h3>Enable or Disable web filter</h3>
+                    <h3>On or Off web filter</h3>
                     <ul>
-                        <li>1. Choose <b>Enable</b> or <b>Disable</b> to change your status <b>Web Filter</b>.</li>
+                        <li>1. Choose <b>On</b> or <b>Off</b> to change your status <b>Web Filter</b>.</li>
                         <li>2. All your configuration will be saved and you can see your category status changed on web filter config.</li>
                     </ul>
                     <br>
                     <h3>Choose category to filter</h3>
                     <ul>
                         <li>1. You can choose which category you want to filter.</li>
-                        <li>2. Choose <b>Enable</b> or <b>Disable</b> to change your status category filter.</li>
+                        <li>2. Choose <b>On</b> or <b>Off</b> to change your status category filter.</li>
                         <li>3. All your configuration will be saved and you can see your category status changed on web filter config.</li>
                     </ul>
                 </div>
@@ -106,7 +110,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="row mb-3">
+        <div class="row mb-5">
             <div class="col">
                 <div class="card">
                     <div class="card-body table-responsive">
@@ -116,6 +120,12 @@
                             </h4>
                             <i class="align-content-end fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose category to filter."></i>
                         </div>
+                        <hr>
+                                    <p style="font-size: 12px; color: grey;">Adult: Domains that contains Not Safe for Work (NSFW) or any pornography content</p>
+                                    <p style="font-size: 12px; color: grey;">Gambling: Domains that contains all gambling website.</p>
+                                    <p style="font-size: 12px; color: grey;">Social Media: Domains that contains any related social media platform.</p>
+                                    <p style="font-size: 12px; color: grey;">Security: Domains that contains malicious and scam website</p>
+                                    <p style="font-size: 12px; color: grey;">Others: Domains that is categorised not harmful but not listed in default categories</p>
                         <hr>
                         <table id="blacklist" class="table table-striped" style="width:100%">
                             <thead>
@@ -132,14 +142,14 @@
                                     <td>
                                         <a href="{% url 'setfiltertrue' cat.id %}">
                                             <button class="btn btn-success text-white">
-                                                Enable
+                                                On
                                             </button>
                                         </a>
                                     </td>
                                     <td>
                                         <a href="{% url 'setfilterfalse' cat.id %}">
                                             <button class="btn btn-delete text-white">
-                                            Disable
+                                            Off
                                         </button>
                                         </a>
                                     </td>

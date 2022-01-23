@@ -1,11 +1,15 @@
 {% include 'main.html' %}
 {% load static %}
+<style>
+    h1, h2, h3, p{
+        color: white;
+    }
+</style>
 {% block content %}
     <!-- themed-grid-col or themed-container -->
     <main>
         {% include 'navbar.html' %}
         <!-- About Us -->
-        {% comment %} {% include 'toast.html' %} {% endcomment %}
         <div class="container col-xxl-8 px-4 py-5">
             {% include 'alert.html' %}
             <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
@@ -42,14 +46,14 @@
                         <i class="fas fa-tachometer-alt"></i>
                     </div>
                     <h3>User-friendly analysis</h3>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <p>An interactive dashboard for parents to view statistic and graph of their children behavior on the Internet. Parents can download the report to get all the latest informations.</p>
                 </div>
                 <div class="feature col">
                     <div class="feature-icon">
                         <i class="fas fa-filter"></i>
                     </div>
                     <h3>Web Filter</h3>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <p>Restricts or controls the content an Internet user is capable to access, especially when utilized to restrict material delivered over the Internet. Parents can choose which category to block from their children.</p>
                 </div>
                 <div class="feature col">
                     <div class="feature-icon">
@@ -57,7 +61,7 @@
                     </div>
                     <h3>Custom whitelist & blacklist</h3>
                     <h2></h2>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <p>Freedom for parents to customize their whitelist and blacklist domain names based on their preferences.</p> 
                 </div>
             </div>
         </div>
@@ -70,7 +74,7 @@
                         <br>
                         <li class="list-unstyled me-3">
                             <i class="far fa-envelope"></i>
-                            <a class="text-white" href="mailto:sadns.tech@gmail.com"><span>sadns.tech@gmail.com</span></a>
+                            <a style="text-decoration:none" class="text-white" href="mailto:sadns.dev@gmail.com"><span>sadns.dev@gmail.com</span></a>
                         </li>
                         <li class="list-unstyled">
                             <i class="fas fa-phone-alt"></i>

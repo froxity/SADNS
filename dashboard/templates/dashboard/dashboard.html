@@ -1,5 +1,8 @@
 {% include 'main-dashboard.html' %}
 {% load static %}
+{% block style %}
+<link href="{% static 'styles/dashboard.css' %}" rel="stylesheet">
+{% endblock style %}
 {% block content %}
     <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container-fluid">
@@ -48,7 +51,7 @@
         </div>
     </nav>
     <main>
-        <div class="container mt-2">
+        <div class="container primaryContainer mt-2">
             <div class="row mb-3 pt-5">
                 <div class="col-md-8">
                     <div class="">
@@ -75,8 +78,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">{{totalDNSquery}}</h4>
-                                <p class="card-text">
-                                    Total DNS Queries
+                                <p style='color: black;'class="card-text">
+                                    Total Domain Names
                                 </p>
                             </div>
                         </div>
@@ -86,19 +89,26 @@
                             <div class="card">
                                 <div class="card-body table-responsive">
                                     <h4 class="card-title">Activity Report</h4>
-                                    <p class="text-muted">Top five domains queries by {{name}}</p>
+                                    <p class="text-muted">Top five domains by {{name}}</p>
                                     <hr>
                                     <div id="piechart"></div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="row">
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Category Report</h4>
+                                    <hr>
+                                    <p style="font-size: 12px; color: grey;">Adult: Domains that contains Not Safe for Work (NSFW) or any pornography content</p>
+                                    <p style="font-size: 12px; color: grey;">Gambling: Domains that contains all gambling website.</p>
+                                    <p style="font-size: 12px; color: grey;">Social Media: Domains that contains any related social media platform.</p>
+                                    <p style="font-size: 12px; color: grey;">Security: Domains that contains malicious and scam website</p>
+                                    <p style="font-size: 12px; color: grey;">Others: Domains that is categorised not harmful but not listed in default categories</p>
                                     <hr>
                                     <div id="chart"></div>
                                 </div>
@@ -106,35 +116,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body table-responsive">
-                            <h4 class="card-title">Popular Domains</h4>
-                            <hr>
-                            <table id="example" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Domain</th>
-                                        <th>Frequency</th>
-                                        <th>Category</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for domain in domains %}
-                                    <tr>
-                                        <td>{{domain}}</td>
-                                        <td>{{domain.freq}}</td>
-                                        <td>{{domain.cat_id.name}}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+            </div>
+            <div class="col mb-5 pb-5">
+                <div class="card">
+                    <div class="card-body table-responsive">
+                        <h4 class="card-title">Popular Domains</h4>
+                        <hr>
+                        <table id="example" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Domain</th>
+                                    <th>Frequency</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for domain in domains %}
+                                <tr>
+                                    <td>{{domain}}</td>
+                                    <td>{{domain.freq}}</td>
+                                    <td>{{domain.cat_id.name}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 p-4">
-
             </div>
         </div>
     </main>

@@ -21,10 +21,6 @@ html {
     scroll-behavior: smooth;
 }
 
-main {
-    background: white;
-}
-
 header {
     background: var(--color-dark);
 }

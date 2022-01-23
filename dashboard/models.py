@@ -53,6 +53,9 @@ class Domain(models.Model):
     
     def __str__(self):
         return self.domain
+    
+    class Meta:
+        ordering = ['freq']
 
 class Category(models.Model):
     id = models.UUIDField(
