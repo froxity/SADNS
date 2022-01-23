@@ -1,7 +1,7 @@
 .primaryContainer h1,
-hr,
-p,
-h3,
-ul {
+.primaryContainer hr,
+.primaryContainer p,
+.primaryContainer h3,
+.primaryContainer ul {
     color: white;
 }
