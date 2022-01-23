@@ -14,7 +14,12 @@ import os
 import django_heroku
 from datetime import timedelta
 from pathlib import Path
+from dotaenv import load_dotenv
 from django.contrib.messages import constants as messages
+
+# Using dotenv to load environment variables
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3s_sgx3zxv7jkd%)=_s@160qj3q9k$(i6heq-vpvzko6-h0a)w'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # Debug and development process use This!
 DEBUG = False
@@ -172,10 +177,10 @@ WSGI_APPLICATION = 'sadns.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd2f7kqgmorgr4t',
-        'USER': 'iepmpmmhqxaynp',
-        'PASSWORD': 'd287c1b433a3b28e6469ec723c88859db3c15d4f787d010f00e37c4be02a15a1',
-        'HOST': 'ec2-23-21-229-200.compute-1.amazonaws.com',
+        'NAME': os.getenv("NAME"),
+        'USER': os.getenv("USER"),
+        'PASSWORD': os.getenv("PASSWORD"),
+        'HOST': os.getenv("HOST"),
         'PORT': '5432',
     }
 }
@@ -220,8 +225,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'sadns.dev@gmail.com'
-EMAIL_HOST_PASSWORD = ':u.dnFy2dJ8SJrH'
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER"),
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD"),
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
