@@ -37,7 +37,13 @@ def domains(request):
           item = Domain.objects.get(id=x.id)
           if item.freq < int(data['freq']): # Check if any changes
             # item.freq = item.freq + int(data['freq']) # Should not added because it will create redudancy
-            item.freq = int(data['freq'])
+            diff = int(data['freq']) - item.freq
+            item.freq = item.freq + diff
+            item.save()
+            domainstatus = True
+            break
+          elif item.freq > int(data['freq']): 
+            item.freq = item.freq + int(data['freq'])
             item.save()
             domainstatus = True
             break
@@ -72,7 +78,7 @@ def getCategory(request):
   serializer = CategorySerializer(category, many=True)
   return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-@api_view(['GET'])
+@api_view(['GET','POST'])
 @permission_classes([IsAuthenticated])
 def whitelist(request):
   """
@@ -83,35 +89,52 @@ def whitelist(request):
     profile = request.user.profile
     # Get all whitelist domain from the USER
     domain_whitelist = profile.whitelist_set.all()
-    # domain_whitelist = Whitelist.objects.all()
     # Serialize JSON data
     serializer = WhitelistSerializer(domain_whitelist, many=True)
     return Response(serializer.data)
   
   elif request.method == 'POST':
+    # Request user profile since we need to get all whitelist from that User
     profile = request.user.profile
     data = request.data
-    form_whitelist = WhitelistForm(instance=profile)
-    form_whitelist = WhitelistForm(request.POST)
-    if form_whitelist.is_valid():
-      whitelist = form_whitelist.save(commit=False)
-      whitelist.owner = profile
-      whitelist.save()
-      return Response(status=status.HTTP_201_CREATED)
-  else:
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    whitelist = Whitelist.objects.create(
+      wl_domain = data['wl_domain'],
+      wl_comment = data['wl_comment'],
+      owner = profile,
+    )
+    serializer = WhitelistSerializer(data = data)
+    if serializer.is_valid():
+      return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
+@api_view(['GET','POST'])
 @permission_classes([IsAuthenticated])
-def getBlacklist(request):
-  # Request user profile since we need to get all blacklist from that User
-  profile = request.user.profile
-  # Get all blacklist domain from the USER
-  domain_blacklist = profile.blacklist_set.all()
-  # domain_blacklist = Blacklist.objects.all()
-  # Serialize JSON data
-  serializer = BlacklistSerializer(domain_blacklist, many=True)
-  return Response(serializer.data, status=status.HTTP_201_CREATED)
+def blacklist(request):
+  """
+  List all blacklist, or create a new blacklist
+  """
+  if request.method == 'GET':
+    # Request user profile since we need to get all blacklist from that User
+    profile = request.user.profile
+    # Get all blacklist domain from the USER
+    domain_blacklist = profile.blacklist_set.all()
+    # Serialize JSON data
+    serializer = BlacklistSerializer(domain_blacklist, many=True)
+    return Response(serializer.data)
+  
+  elif request.method == 'POST':
+    # Request user profile since we need to get all blacklist from that User
+    profile = request.user.profile
+    data = request.data
+    blacklist = Blacklist.objects.create(
+      bl_domain = data['bl_domain'],
+      bl_comment = data['bl_comment'],
+      owner = profile,
+    )
+    serializer = BlacklistSerializer(data = data)
+    if serializer.is_valid():
+      return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -124,7 +147,7 @@ def getProfileConfig(request):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def putWebFilter(request, pk):
+def putProfileConfig(request, pk):
   """Update webfilter status"""
   try:
     setting = profileConfig.objects.get(id=pk)
