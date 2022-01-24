@@ -120,7 +120,7 @@ def dashboard(request):
             gambling = gambling + x.freq
         elif (x.cat_id.name == 'Social Media'):
             socialmed = socialmed + x.freq
-        elif (x.cat_id.name == 'Security'):
+        elif (x.cat_id.name == 'Malware'):
             security = security + x.freq
         elif (x.cat_id.name == 'Others'):
             others = others + x.freq
