@@ -2,6 +2,8 @@
 
 Hello my name is **Ahmad Afiq Azmi**, Final year computer science student (*Computer System & Networking*). I'm in charge developing web-based application for this **SA DNS Filtering System**.
 
+Checkout my partner works for **desktop application**: [SA DNS Desktop Application](https://github.com/cfone98/SA-DNS-Desktop)
+
 # Introduction
 
 The purpose of this project is to build a DNS Filtering system for traffic monitoring for parental control applications. Users and system developers are among the target audiences for this project
