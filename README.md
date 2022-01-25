@@ -23,25 +23,26 @@ The application is a client-server based system, which contains five components:
  - Custom whitelist & blacklist
  
 # Design
-###  Landing Page (Home)
-![Landing page](https://i.imgur.com/0obVajm.jpg)
+####  Landing Page (Home)
+![Landing page](https://i.imgur.com/B9Q5Ji8.jpg)
 
-###  Login
-![Login](https://i.imgur.com/OK3jGXn.jpg)
+####  Login
+![Login](https://i.imgur.com/vQLd9L9.jpg)
  
-###  Register
-![enter image description here](https://i.imgur.com/LsIdwvp.jpg)
-###  Dashboard
+####  Register
+![enter image description here](https://i.imgur.com/EWsBEVu.jpg)
+####  Dashboard
 Parent can see their child activity on the Internet
 
-![enter image description here](https://i.imgur.com/xFOoF1B.jpg)
-###  Web Filter
+![enter image description here](https://i.imgur.com/0ia2EDs.jpg)
+
+####  Web Filter
 Parent can choose which category to filter.
 
-![enter image description here](https://i.imgur.com/W3Rs0ld.jpg)
-###  Domains
+![enter image description here](https://i.imgur.com/BV7a8YK.jpg)
+####  Domains
 Parent can add whitelist and blacklist domains based on their preferences.
 
-![enter image description here](https://i.imgur.com/Hhu6PnM.jpg)
-###  Account
-![enter image description here](https://i.imgur.com/fldS2M6.jpg)
+![enter image description here](https://i.imgur.com/7RHbRfA.jpg)
+####  Account
+![enter image description here](https://i.imgur.com/j9PKCfn.jpg)
