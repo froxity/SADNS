@@ -122,10 +122,10 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-delete text-white" data-bs-toggle="modal" data-bs-target="#whitelistModal">
+                                    <button type="button" class="btn btn-delete text-white" data-bs-toggle="modal" data-bs-target="#whitelistModal{{ x.wl_domain }}">
                                         <i class="fas fa-trash me-2"></i>Delete
                                     </button>
-                                    <div class="modal fade" id="whitelistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="whitelistModal{{ x.wl_domain }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -209,10 +209,10 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-delete text-white" data-bs-toggle="modal" data-bs-target="#blacklistModal">
+                                    <button type="button" class="btn btn-delete text-white" data-bs-toggle="modal" data-bs-target="#blacklistModal{{ y.bl_domain }}">
                                         <i class="fas fa-trash me-2"></i>Delete
                                     </button>
-                                    <div class="modal fade" id="blacklistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="blacklistModal{{ y.bl_domain }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
